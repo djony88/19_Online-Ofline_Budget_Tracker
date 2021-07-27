@@ -44,3 +44,12 @@ function checkDatabase() {
         }
     };
 }
+
+function saveRecord(record) { 
+    const transaction = db.transaction(["pending"], "readwrite");
+    const store = transaction.objectStore("pending");
+
+    store.add(record);
+};
+
+window.addEventListener("online", checkDatabase);
