@@ -21,6 +21,22 @@ self.addEventListener('install', function(event) {
     self.skipWaiting();
 });
 
+self.addEventListener('activate', function (event) {
+    self.waitUntil(
+        caches.keys().then(keyList => {
+            return Promise.all(
+                keyList.map( key => {
+                    if (key !== CACHE_NAME && key !== DATA_CACHE_NAME) {
+                        console.log( 'Removing old cache data!', key);
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+})
+
 self.addEventListener('fetch', function (event) {
     if (event.request.url.incloudes('/api/')) {
         event.respondWith(
@@ -55,3 +71,4 @@ self.addEventListener('fetch', function (event) {
         })
     );
 });
+
