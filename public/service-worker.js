@@ -11,8 +11,9 @@ const FILES_TO_CACHE = [
 const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
 
-self.addEventListener('install', function(event) {
-    event.waitUntil(
+// install
+self.addEventListener('install', function(evnt) {
+    evnt.waitUntil(
         caches.open(CACHE_NAME).then(cache => {
             console.log('YOur input is pre-cashed successfully!');
             return cache.addAll(FILES_TO_CACHE);
@@ -21,8 +22,9 @@ self.addEventListener('install', function(event) {
     self.skipWaiting();
 });
 
-self.addEventListener('activate', function (event) {
-    self.waitUntil(
+// activate
+self.addEventListener('activate', function (evnt) {
+    evnt.waitUntil(
         caches.keys().then(keyList => {
             return Promise.all(
                 keyList.map( key => {
@@ -37,20 +39,21 @@ self.addEventListener('activate', function (event) {
     self.clients.claim();
 })
 
-self.addEventListener('fetch', function (event) {
-    if (event.request.url.incloudes('/api/')) {
-        event.respondWith(
+// fetch
+self.addEventListener('fetch', function (evnt) {
+    if (evnt.request.url.incloudes('/api/')) {
+        evnt.respondWith(
             caches.open(DATA_CACHE_NAME).then(cache => {
-                return fetch(event.request)
+                return fetch(evet.request)
                 .then(response => {
                     if (response.status === 200) {
-                        cache.put(event.request.url, response.clone());
+                        cache.put(evnt.request.url, response.clone());
                     }
 
                 return response;
                 })
                 .cache(err => {
-                    return cache.match(event.request);
+                    return cache.match(evnt.request);
                 });
             }).catch(err => console.log(err))
         );
@@ -58,13 +61,13 @@ self.addEventListener('fetch', function (event) {
         return;
     }
 
-    event.respondWith(
-        fetch(event.requiest).catch(function() {
-            return caches.match(event.requiest).then(function (response) {
+    evnt.respondWith(
+        fetch(evnt.requiest).catch(function() {
+            return caches.match(evnt.requiest).then(function (response) {
                 if (response) {
                     return response;
                 }
-                else if (event.request.headers.get('accept').incloudes('text/html')) {
+                else if (evnt.request.headers.get('accept').incloudes('text/html')) {
                     return caches.match('/');
                 }
             });

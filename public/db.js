@@ -1,6 +1,5 @@
-const { response } = require("express");
-
 let db;
+
 const request = indexedDB.open('budget', 1);
 
 request.onupgradeneeded = function(event) {
@@ -8,7 +7,7 @@ request.onupgradeneeded = function(event) {
     db.createObjectStore("pending", { autoIncrement: true });
 };
 
-request. onsuccess = function(event) {
+request.onsuccess = function(event) {
     db = event.target.result;
     if (navigator.onLine) {
         checkDatabase();
@@ -17,6 +16,13 @@ request. onsuccess = function(event) {
 
 request.onerror = function(event) {
     console.log("Woops! " + event.target.errorCode)
+};
+
+function saveRecord(record) { 
+    const transaction = db.transaction(["pending"], "readwrite");
+    const store = transaction.objectStore("pending");
+
+    store.add(record);
 };
 
 function checkDatabase() {
@@ -44,12 +50,5 @@ function checkDatabase() {
         }
     };
 }
-
-function saveRecord(record) { 
-    const transaction = db.transaction(["pending"], "readwrite");
-    const store = transaction.objectStore("pending");
-
-    store.add(record);
-};
 
 window.addEventListener("online", checkDatabase);
