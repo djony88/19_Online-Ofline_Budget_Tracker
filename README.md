@@ -2,9 +2,9 @@
 
 UCSD-SD-FSF-PT-03-2021-U-C-MW
 
-[Github Link]()
+[Github Link](https://github.com/djony88/19_Online-Ofline_Budget_Tracker)
 
-[Deployed App]()
+[Deployed App](https://shrouded-refuge-70825.herokuapp.com/)
 
 # Requirements:
 
@@ -15,4 +15,6 @@ UCSD-SD-FSF-PT-03-2021-U-C-MW
 
 # Installation:
 
-* `npm start` or just by clicking on `Deployed App`.
+* `npm start` or just by clicking on `Deployed App` :).
+
+![Screenshoot](./public/img/1.png)
