@@ -41,10 +41,10 @@ self.addEventListener('activate', function (evnt) {
 
 // fetch
 self.addEventListener('fetch', function (evnt) {
-    if (evnt.request.url.incloudes('/api/')) {
+    if (evnt.request.url.includes('/api/')) {
         evnt.respondWith(
             caches.open(DATA_CACHE_NAME).then(cache => {
-                return fetch(evet.request)
+                return fetch(evnt.request)
                 .then(response => {
                     if (response.status === 200) {
                         cache.put(evnt.request.url, response.clone());
@@ -52,7 +52,7 @@ self.addEventListener('fetch', function (evnt) {
 
                 return response;
                 })
-                .cache(err => {
+                .catch(err => {
                     return cache.match(evnt.request);
                 });
             }).catch(err => console.log(err))
@@ -62,12 +62,12 @@ self.addEventListener('fetch', function (evnt) {
     }
 
     evnt.respondWith(
-        fetch(evnt.requiest).catch(function() {
-            return caches.match(evnt.requiest).then(function (response) {
+        fetch(evnt.request).catch(function() {
+            return caches.match(evnt.request).then(function (response) {
                 if (response) {
                     return response;
                 }
-                else if (evnt.request.headers.get('accept').incloudes('text/html')) {
+                else if (evnt.request.headers.get('accept').includes('text/html')) {
                     return caches.match('/');
                 }
             });
