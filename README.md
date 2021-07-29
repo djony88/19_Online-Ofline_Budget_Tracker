@@ -17,4 +17,4 @@ UCSD-SD-FSF-PT-03-2021-U-C-MW
 
 * `npm start` or just by clicking on `Deployed App` :).
 
-![Screenshoot](./public/img/1.png)
+![Screenshot](./public/img/1.png)
